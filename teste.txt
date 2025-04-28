@@ -1,0 +1,54 @@
+enable
+
+config
+
+interface gpon 0/10
+
+ont add 13 sn-auth 495442538BAB819B omci ont-lineprofile-id 900
+
+ont-srvprofile-id 900 desc TESTE-1
+
+
+ont port native-vlan 13 0 eth 1 vlan 900
+
+priority 0
+
+quit
+
+service-port vlan False gpon 0/10/12 ont 0
+gemport 900 multi-service user-vlan 900
+tag-transform translate
+interface gpon 0/10
+
+ont add 13 sn-auth 495442538BF7765E omci ont-lineprofile-id 900
+
+ont-srvprofile-id 900 desc TESTE-2
+
+
+ont port native-vlan 13 1 eth 1 vlan 900
+
+priority 0
+
+quit
+
+service-port vlan False gpon 0/10/12 ont 1
+gemport 900 multi-service user-vlan 900
+tag-transform translate
+
+display ont info 12 all
+  -----------------------------------------------------------------------------
+  F/S/P   ONT         SN         Control     Run      Config   Match    Protect
+          ID                     flag        state    state    state    side 
+  -----------------------------------------------------------------------------
+  0/10/12   0  495442538BAB819B  active      offline  initial  initial  no 
+  0/10/12   1  495442538BF7765E  active      offline  initial  initial  no 
+  0/10/12   2  495442538BF77893  active      online   normal   match    no 
+  -----------------------------------------------------------------------------
+  F/S/P   ONT-ID   Description
+  -----------------------------------------------------------------------------
+  0/10/12      0   TESTE-1
+  0/10/12      1   TESTE-2
+  0/10/12      2   TESTE-3
+  -----------------------------------------------------------------------------
+  In port 0/10/12, the total of ONTs are: 3, online: 1
+
