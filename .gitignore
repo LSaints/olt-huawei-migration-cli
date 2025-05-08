@@ -1,1 +1,5 @@
 onts.txt
+onts_*.txt
+.history
+**/__pycache__
+*.pyc
