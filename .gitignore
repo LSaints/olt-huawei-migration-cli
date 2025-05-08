@@ -1,5 +1,6 @@
 onts.txt
 onts_*.txt
 .history
-**/__pycache__
+/**/__pycache__
 *.pyc
+venv

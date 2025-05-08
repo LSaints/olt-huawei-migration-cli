@@ -18,6 +18,8 @@ class Olt:
         display_ont = f"display ont info {gpon[2]} all"
         display_ont_saida = await self.__cliente.executar(display_ont, 
                                                         f"(config-if-gpon-{gpon[0]}/{gpon[1]})#")
+        
+        #self.__mostrar_saida(display_ont, display_ont_saida)
 
         display_ont_saida = display_ont_saida.split("\n")
         
@@ -77,7 +79,7 @@ class Olt:
         if "\r" in ont[-1]:
             ont[-1] = ont[-1].replace("\r", "")
         
-        ont_add = f"ont add {gpon_destino[2]} ontid {ont[1]} sn-auth {ont[2]} omci ont-lineprofile-id 900 ont-srvprofile-id 900 desc {ont[-1]}\r\n"
+        ont_add = f"ont add {gpon_destino[2]} {ont[1]} sn-auth {ont[2]} omci ont-lineprofile-id 900 ont-srvprofile-id 900 desc {ont[-1]}\r\n"
         saida_ont_add = await self.__cliente.executar(ont_add, f"#")
         self.__mostrar_saida(ont_add, saida_ont_add)
         print(ont_add)
