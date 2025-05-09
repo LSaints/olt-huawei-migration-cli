@@ -1,10 +1,12 @@
 from core.client_telnet import ClientTelnet
+from core.ont import Ont
+from typing import List
 
 class Olt:
     def __init__(self, cliente: ClientTelnet):
         self.__cliente = cliente
         
-    async def listar_onts(self, status: str, gpon: str):
+    async def listar_onts(self, status: str, gpon: str) -> List[Ont]:
         ont_lista = []
         gpon = gpon.split("/")
         
@@ -34,16 +36,17 @@ class Olt:
                 for desc in descricoes:
                     if (desc[1] == l[1]):
                         l.append(desc[-1])
-                        ont_lista.append(l)
+                        ont = Ont(l[1], l[0], l[2], l[4], l[-1])
+                        ont_lista.append(ont)
         return ont_lista
     
-    async def desprovisionar_ont(self, ont):
-        gpon = ont[0].split("/")
+    async def desprovisionar_ont(self, ont: Ont):
+        gpon = ont.gpon.split("/")
         
         await self.__cliente.conectar()
         await self.__entrar_modo_configuração()
         
-        undo_service = f"undo service-port port {gpon[0]}/{gpon[1]}/{gpon[2]} ont {ont[1]}\n\r\n"
+        undo_service = f"undo service-port port {gpon[0]}/{gpon[1]}/{gpon[2]} ont {ont.id}\n\r\n"
         await self.__cliente.executar(undo_service, "(config)#")
         print(undo_service)
         
@@ -51,7 +54,7 @@ class Olt:
         await self.__cliente.executar(interface_gpon, "(config)#")
         print(interface_gpon)
         
-        ont_delete = f"ont delete {gpon[2]} {ont[1]}\n"
+        ont_delete = f"ont delete {gpon[2]} {ont.id}\n"
         await self.__cliente.executar(ont_delete, "(config)#")
         print(ont_delete)
         
@@ -63,7 +66,7 @@ class Olt:
         
         await self.__cliente.desconectar()
     
-    async def provisionar_ont(self, ont, gpon_destino, vlan):
+    async def provisionar_ont(self, ont: Ont, gpon_destino, vlan):
         
         await self.__cliente.conectar()
         await self.__entrar_modo_configuração()
@@ -76,15 +79,15 @@ class Olt:
                                f"(config-if-gpon-{gpon_destino[0]}/{gpon_destino[1]})#")
         self.__mostrar_saida(interface_gpon, saida_interface_gpon)
         
-        if "\r" in ont[-1]:
-            ont[-1] = ont[-1].replace("\r", "")
+        if "\r" in ont.descricao:
+            ont.descricao = ont.descricao.replace("\r", "")
         
-        ont_add = f"ont add {gpon_destino[2]} {ont[1]} sn-auth {ont[2]} omci ont-lineprofile-id 900 ont-srvprofile-id 900 desc {ont[-1]}\r\n"
+        ont_add = f"ont add {gpon_destino[2]} {ont.id} sn-auth {ont.mac} omci ont-lineprofile-id 900 ont-srvprofile-id 900 desc {ont.descricao}\r\n"
         saida_ont_add = await self.__cliente.executar(ont_add, f"#")
         self.__mostrar_saida(ont_add, saida_ont_add)
         print(ont_add)
         
-        ont_port = f"ont port native-vlan {gpon_destino[2]} {ont[1]} eth 1 vlan 900 priority 0\r\n"
+        ont_port = f"ont port native-vlan {gpon_destino[2]} {ont.id} eth 1 vlan 900 priority 0\r\n"
         saida_ont_port = await self.__cliente.executar(ont_port, "#")
         self.__mostrar_saida(ont_port, saida_ont_port)
         print(ont_port)
@@ -93,7 +96,7 @@ class Olt:
         await self.__cliente.executar(quit, "(config)#")
         print(quit)
         
-        service_port = f"service-port vlan {vlan} gpon {gpon_destino[0]}/{gpon_destino[1]}/{gpon_destino[2]} ont {ont[1]} gemport 900 multi-service user-vlan 900 tag-transform translate\r\n"
+        service_port = f"service-port vlan {vlan} gpon {gpon_destino[0]}/{gpon_destino[1]}/{gpon_destino[2]} ont {ont.id} gemport 900 multi-service user-vlan 900 tag-transform translate\r\n"
         await self.__cliente.executar("\n\r", "#")
         saida_service_port = await self.__cliente.executar(service_port, "(config)#")
         self.__mostrar_saida(service_port, saida_service_port)

@@ -2,15 +2,14 @@ import asyncio
 import os
 
 from datetime import datetime
-from core.client_telnet import ClientTelnet
-from core.olt import Olt
+from core import ClientTelnet, Olt
 
 
 data_execucao = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-def salvar_txt(items: list) -> None:
+def salvar_txt(ont) -> None:
     with open(f"logs/onts_{data_execucao}.txt", "a", encoding="utf-8") as file:
-        linha = " ".join(str(sub) for sub in items)
+        linha = f'{ont.gpon};{ont.id};{ont.mac};{ont.status};{ont.descricao}'
         file.write(linha + "\n")
 
 def realizar_escolha() -> str:
@@ -35,7 +34,9 @@ async def migrar_olt(onts: list, olt: Olt) -> None:
     print("\nADICIONANDO ONTS\n")
     print("="*100)
     for ont in onts:
-        await olt.provisionar_ont(ont=ont, gpon_destino=gpon_destino, vlan=vlan_destino)
+        await olt.provisionar_ont(ont=ont, 
+                                  gpon_destino=gpon_destino, 
+                                  vlan=vlan_destino)
 
 async def main():
     cliente = ClientTelnet(
@@ -60,7 +61,7 @@ async def main():
        
     for ont in onts:
         salvar_txt(ont)
-        print(ont)
+        print(f'{ont.gpon} {ont.id} {ont.mac} {ont.status} {ont.descricao}')
     
     opcao = realizar_escolha()
 
