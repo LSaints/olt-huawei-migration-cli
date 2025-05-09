@@ -8,12 +8,20 @@ from core.olt import Olt
 
 data_execucao = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-def salvar_txt(items: list):
+def salvar_txt(items: list) -> None:
     with open(f"logs/onts_{data_execucao}.txt", "a", encoding="utf-8") as file:
         linha = " ".join(str(sub) for sub in items)
         file.write(linha + "\n")
 
-async def migrar_olt(onts: list, olt: Olt):
+def realizar_escolha() -> str:
+    print('='*100)
+    print('\n[1] - Migrar\n')
+    print('\n[0] - Sair\n')
+    print('='*100)
+    opcao = input(str('\n>: '))
+    return opcao
+
+async def migrar_olt(onts: list, olt: Olt) -> None:
     gpon_destino = input(str('\nDigite a gpon de destino: '))
     vlan_destino = input(str('\nDigite a vlan de destino: '))
 
@@ -28,14 +36,6 @@ async def migrar_olt(onts: list, olt: Olt):
     print("="*100)
     for ont in onts:
         await olt.provisionar_ont(ont=ont, gpon_destino=gpon_destino, vlan=vlan_destino)
-        
-def realizar_escolha() -> str:
-    print('='*100)
-    print('\n[1] - Migrar\n')
-    print('\n[0] - Sair\n')
-    print('='*100)
-    opcao = input(str('\n>: '))
-    return opcao
 
 async def main():
     cliente = ClientTelnet(

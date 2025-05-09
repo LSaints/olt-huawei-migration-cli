@@ -59,7 +59,7 @@ class Olt:
         await self.__cliente.executar(quit, "#")
         print("quit\n")
         
-        print('='*50)
+        print('='*100)
         
         await self.__cliente.desconectar()
     
@@ -98,7 +98,7 @@ class Olt:
         saida_service_port = await self.__cliente.executar(service_port, "(config)#")
         self.__mostrar_saida(service_port, saida_service_port)
         print(service_port)
-        print("="*50)
+        print("="*100)
         
         await self.__cliente.desconectar()
     
