@@ -1,0 +1,54 @@
+Screen {
+    layout: grid;
+}
+
+.container {
+    layout: grid;
+    grid-size: 3;
+    border: solid green;
+}
+
+.input_list_gpon {
+    layout: grid;
+    grid-size: 2;
+}
+
+.content {
+    
+}
+
+.table {
+    height: 100vh;
+    background: black;
+}
+
+.label {
+    padding-top: 1;
+}
+
+.Input.-valid {
+    border: tall $success 60%; 
+}
+
+.Input.-valid:focus {
+    border: tall $success;
+}
+
+#migrar_button {
+    margin-left: 1;
+}
+
+.log {
+    margin-left: 1;
+    background: black;
+    color: #00ff00;
+}
+
+.text {
+    height: 1;
+    background: black;
+}
+
+#gpon_origem_button {
+    margin-left: 1;
+}

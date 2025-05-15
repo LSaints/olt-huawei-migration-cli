@@ -1,4 +1,5 @@
 onts.txt
+onts_*.log
 onts_*.txt
 .history
 /**/__pycache__

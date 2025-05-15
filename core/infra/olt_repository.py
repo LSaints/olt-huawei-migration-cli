@@ -1,8 +1,8 @@
-from core.client_telnet import ClientTelnet
-from core.ont import Ont
 from typing import List
+from core.domain import Ont
+from .client_telnet import ClientTelnet
 
-class Olt:
+class OltRepository:
     def __init__(self, cliente: ClientTelnet):
         self.__cliente = cliente
         
@@ -137,5 +137,3 @@ class Olt:
                
     def __mostrar_saida(self, comando, saida):
         print(f'\n>> {comando}\n{saida}')
-    
-    
