@@ -12,6 +12,7 @@ class ClientTelnet:
         self.prompt = prompt
         
     async def conectar(self):
+        print("conectando...")
         self.reader, self.writer = await telnetlib3.open_connection(
             self.host, port=self.porta, encoding='utf-8'
         )

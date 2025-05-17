@@ -1,3 +1,3 @@
 from .infra import ClientTelnet
-from .services import OltServices
+from .services import OntServices
 from .domain import Ont

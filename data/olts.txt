@@ -1,0 +1,4 @@
+OLT-HW-TNVL-ESC-01;10.55.160.2;smartolt;rJXf2JA1p4NjTui
+OLT-HW-JQO-ESC-01;10.11.104.25;smartolt;s7KKY!&$6mv1
+OLT-HW-CLR-ESC-01;10.3.105.62;root;LigTelecom.adm2
+OLT-HW-CLR-LUZ-ESC-01;10.0.9.6;root;LigTelecom.adm2
