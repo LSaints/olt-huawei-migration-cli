@@ -1,11 +1,10 @@
 from typing import override
 
 from rich.text import Text
-
 from textual import on
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
-from textual.widgets import DataTable, Select, Static, Button, Input, Footer, Log
+from textual.widgets import DataTable, Static, Button, Input, Footer, Log
 
 from core.services.olt_services import OltServices
 from .widgets import input_gpon_origem, ont_status_select, btn_listar, btn_migrar, input_gpon_migrar, input_vlan_migrar, select_olt
@@ -155,6 +154,7 @@ class TerminalInterface(App):
         )
     
     async def __load_data(self, gpon_origem: str, status_ont: str) -> None:
+        
         onts_result = await self.__ont_services.listar_onts(status=status_ont, gpon=gpon_origem)
         self.__onts = [(ont.gpon, ont.id, ont.mac, ont.status, ont.descricao) for ont in onts_result]
         self.__logger.gerar_log_onts(onts=onts_result)
@@ -162,6 +162,8 @@ class TerminalInterface(App):
 
     
     def __load_olts(self) -> None:
+        log = self.query_one(Log)
+        log.clear()
         olts_result = self.__olt_services.buscar_olts()
         self.__olts = [(f"{olt.nome} - {olt.host}", f"{olt.nome} - {olt.host}") for olt in olts_result]
         select_olt = self.select_olt

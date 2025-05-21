@@ -5,3 +5,7 @@ onts_*.txt
 /**/__pycache__
 *.pyc
 venv
+oltcli.spec
+dist
+build_env
+build

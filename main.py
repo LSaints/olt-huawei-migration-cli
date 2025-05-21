@@ -1,4 +1,7 @@
 from setup import Setup
-  
-if __name__ == "__main__":
+
+def main():
     Setup()
+
+if __name__ == "__main__":
+    main()

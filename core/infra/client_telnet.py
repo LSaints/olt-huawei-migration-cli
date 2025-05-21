@@ -1,3 +1,4 @@
+import asyncio
 import telnetlib3
 
 class ClientTelnet:
@@ -27,10 +28,23 @@ class ClientTelnet:
 
     async def executar(self, comando, esperado):
         self.writer.write(comando + '\r\n')
-        resultado = await self.reader.readuntil(esperado.encode())
-        if isinstance(resultado, bytes):
-            resultado = resultado.decode('utf-8')
+        await asyncio.sleep(1)
+        try:
+            resultado = await self.reader.readuntil(esperado.encode())
+            if isinstance(resultado, bytes):
+                resultado = resultado.decode('utf-8')
+            
+        except asyncio.IncompleteReadError as e:
+            print("[WARN] Leitura incompleta. Usando dados parciais.")
+            resultado = e.partial.decode('utf-8', errors='ignore')
+        except asyncio.TimeoutError:
+            print("[ERRO] Timeout ao esperar resposta.")
+            resultado = ''
+        except Exception as e:
+            print(f"[ERRO inesperado] {e}")
+            resultado = ''
         return resultado.strip()
+    
     
     async def desconectar(self):
         self.writer.write('exit\n')
