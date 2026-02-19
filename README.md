@@ -1,4 +1,4 @@
-# 🚀 Nome do Seu Projeto
+# 🚀 olt-huawei-migration-cli
 
 Uma breve descrição do que sua ferramenta (TUI) faz e por que ela é incrível.
 
