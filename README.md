@@ -1,9 +1,5 @@
 # 🚀 olt-huawei-migration-cli
 
-Uma breve descrição do que sua ferramenta (TUI) faz e por que ela é incrível.
-
----
-
 ## 📋 Pré-requisitos
 
 Antes de começar, certifique-se de ter o **Python 3.8+** instalado em sua máquina:
